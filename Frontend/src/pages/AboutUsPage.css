@@ -1,0 +1,53 @@
+
+.about-us {
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.about-us h1 {
+  margin-bottom: 20px;
+  font-size: 2.5em;
+  color: #2c3e50;
+  text-align: center;
+}
+
+/* Paragraph styling */
+.about-us p {
+  margin-bottom: 15px;
+  line-height: 1.6;
+  font-size: 1.2em;
+  color: #7f8c8d;
+  text-align: justify;
+}
+
+/* Responsive design for different screen sizes */
+@media (max-width: 768px) {
+  .about-us {
+    padding: 15px;
+  }
+
+  .about-us h1 {
+    font-size: 2em;
+  }
+
+  .about-us p {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-us {
+    padding: 10px;
+  }
+
+  .about-us h1 {
+    font-size: 1.8em;
+  }
+
+  .about-us p {
+    font-size: 0.9em;
+  }
+}

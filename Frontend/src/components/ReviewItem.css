@@ -1,0 +1,67 @@
+.review-item {
+  border: 1px solid #d1d1d6;
+  padding: 15px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.review-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.review-item p {
+  font-size: 1.2em;
+  color: #3a3a3c;
+  margin-bottom: 10px;
+}
+
+.review-item span {
+  display: block;
+  font-size: 1em;
+  color: #8e8e93;
+}
+
+.review-item button {
+  padding: 8px 12px;
+  background-color: transparent;
+  color: #ff3b30;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.review-item button:hover {
+  color: #c1271a;
+}
+
+@media (max-width: 768px) {
+  .review-item p {
+    font-size: 1em;
+  }
+
+  .review-item span {
+    font-size: 0.9em;
+  }
+
+  .review-item button {
+    font-size: 1.3em;
+  }
+}
+
+@media (max-width: 480px) {
+  .review-item p {
+    font-size: 0.9em;
+  }
+
+  .review-item span {
+    font-size: 0.8em;
+  }
+
+  .review-item button {
+    font-size: 1.2em;
+  }
+}

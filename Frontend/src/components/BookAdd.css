@@ -1,0 +1,107 @@
+.book-add {
+  margin: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #d1d1d6;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: #333;
+}
+
+.book-add h2 {
+  font-size: 2em;
+  color: #1d1d1f;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.book-add form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.book-add form div {
+  display: flex;
+  flex-direction: column;
+}
+
+.book-add label {
+  font-size: 1.2em;
+  color: #3a3a3c;
+  margin-bottom: 5px;
+}
+
+.book-add input[type="text"],
+.book-add input[type="file"] {
+  padding: 10px;
+  border: 1px solid #d1d1d6;
+  border-radius: 8px;
+  font-size: 1em;
+}
+
+.book-add button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.book-add button:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .book-add {
+    padding: 15px;
+  }
+
+  .book-add h2 {
+    font-size: 1.8em;
+  }
+
+  .book-add label {
+    font-size: 1em;
+  }
+
+  .book-add input[type="text"],
+  .book-add input[type="file"] {
+    font-size: 0.9em;
+  }
+
+  .book-add button {
+    font-size: 0.9em;
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .book-add {
+    padding: 10px;
+  }
+
+  .book-add h2 {
+    font-size: 1.5em;
+  }
+
+  .book-add label {
+    font-size: 0.9em;
+  }
+
+  .book-add input[type="text"],
+  .book-add input[type="file"] {
+    font-size: 0.8em;
+  }
+
+  .book-add button {
+    font-size: 0.8em;
+    padding: 7px 10px;
+  }
+}

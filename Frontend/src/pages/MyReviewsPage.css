@@ -1,0 +1,110 @@
+
+.my-reviews-page {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: #333;
+  background-color: #f0f0f5;
+  height: 100vh;
+}
+
+.header {
+  width: 100%;
+}
+
+.sidebar {
+  flex: 0 0 200px;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+h2 {
+  font-size: 2.5em;
+  color: #1d1d1f;
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  border: 1px solid #d1d1d6;
+  padding: 15px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+li:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+li h3 {
+  font-size: 1.8em;
+  color: #3a3a3c;
+  margin-bottom: 10px;
+}
+
+li p {
+  font-size: 1.2em;
+  color: #3a3a3c;
+}
+
+.review-text {
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .my-reviews-page {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    flex: 0 0 auto;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .content {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 2em;
+  }
+
+  li h3 {
+    font-size: 1.5em;
+  }
+
+  li p {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .my-reviews-page {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 1.8em;
+  }
+
+  li h3 {
+    font-size: 1.3em;
+  }
+
+  li p {
+    font-size: 0.9em;
+  }
+}

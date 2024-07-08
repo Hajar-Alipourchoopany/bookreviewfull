@@ -1,0 +1,91 @@
+.top-reviewers {
+  margin: 20px 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: #333;
+}
+
+.top-reviewers h2 {
+  font-size: 2em;
+  color: #1d1d1f;
+  margin-bottom: 20px;
+}
+
+.top-reviewers ul {
+  list-style: none;
+  padding: 0;
+}
+
+.top-reviewers li {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background-color: #ffffff;
+  border: 1px solid #d1d1d6;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.top-reviewers li:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.top-reviewers img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.top-reviewers span {
+  display: block;
+  font-size: 1.2em;
+  color: #3a3a3c;
+}
+
+.top-reviewers span + span {
+  margin-left: auto;
+  color: #8e8e93;
+}
+
+@media (max-width: 768px) {
+  .top-reviewers h2 {
+    font-size: 1.5em;
+  }
+
+  .top-reviewers li {
+    padding: 12px;
+  }
+
+  .top-reviewers img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .top-reviewers span {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-reviewers h2 {
+    font-size: 1.2em;
+  }
+
+  .top-reviewers li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .top-reviewers img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .top-reviewers span {
+    font-size: 0.9em;
+  }
+}
