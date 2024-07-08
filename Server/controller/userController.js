@@ -16,7 +16,9 @@ export const registerUser = async (req, res) => {
     // Überprüfen, ob der Benutzer existiert
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: 'Benutzer mit dieser E-Mail existiert bereits' });
+      return res
+        .status(400)
+        .json({ message: 'Benutzer mit dieser E-Mail existiert bereits' });
     }
 
     // Passwort hashen
@@ -33,7 +35,9 @@ export const registerUser = async (req, res) => {
     await newUser.save();
 
     // JWT Token erstellen
-    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+      expiresIn: '1h',
+    });
 
     res.status(201).json({ token, user: newUser });
   } catch (error) {
@@ -59,7 +63,9 @@ export const loginUser = async (req, res) => {
     }
 
     // JWT Token erstellen
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '1h',
+    });
 
     res.status(200).json({ token, user });
   } catch (error) {
@@ -100,19 +106,21 @@ export const getTopReviewer = async (req, res) => {
         $project: {
           username: 1,
           profileImageUrl: 1,
-          reviewCount: { $size: "$reviews" }
-        }
+          reviewCount: { $size: '$reviews' },
+        },
       },
       {
-        $sort: { reviewCount: -1 }
+        $sort: { reviewCount: -1 },
       },
       {
-        $limit: 1
-      }
+        $limit: 1,
+      },
     ]);
 
     if (topReviewer.length === 0) {
-      return res.status(200).json({ message: 'Keine Reviewer gefunden.', reviewers: [] });
+      return res
+        .status(200)
+        .json({ message: 'Keine Reviewer gefunden.', reviewers: [] });
     }
 
     res.status(200).json({ reviewers: topReviewer });
@@ -138,13 +146,18 @@ export const addReviewToFavorites = async (req, res) => {
     }
 
     if (user.favorites.includes(reviewId)) {
-      return res.status(400).json({ message: 'Rezension bereits in den Favoriten.' });
+      return res
+        .status(400)
+        .json({ message: 'Rezension bereits in den Favoriten.' });
     }
 
     user.favorites.push(reviewId);
     await user.save();
 
-    res.status(200).json({ message: 'Rezension zu den Favoriten hinzugefügt.', favorites: user.favorites });
+    res.status(200).json({
+      message: 'Rezension zu den Favoriten hinzugefügt.',
+      favorites: user.favorites,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
