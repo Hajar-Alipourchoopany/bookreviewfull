@@ -1,21 +1,18 @@
 import multer from 'multer';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
-import cloudinary from '../config/claudinary.js';
+import { v2 as cloudinary } from 'cloudinary';
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
 
 const storage = new CloudinaryStorage({
-  cloudinary,
-  params: async (req, file) => {
-    let folderName = '';
-    if (file.fieldname === 'profileImageUrl') {
-      folderName = 'profileImage';
-    } else if (file.fieldname === 'book_image') {
-      folderName = 'coverImage';
-    }
-
-    return {
-      folder: folderName,
-      allowed_formats: ['jpg', 'png'],
-    };
+  cloudinary: cloudinary,
+  params: {
+    folder: 'profileImages',
+    allowedFormats: ['jpeg', 'jpg', 'png', 'gif'],
   },
 });
 
