@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './BookList.css';
 
 const BookList = () => {
   const [books, setBooks] = useState([]);
@@ -26,21 +25,24 @@ const BookList = () => {
   };
 
   return (
-    <div className="book-list">
-      <h2>Most Reviewed Books</h2>
-      <div className="book-list-horizontal-scroll">
+    <div className="p-6 bg-white rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold mb-4">Most Reviewed Books</h2>
+      <div className="overflow-x-auto whitespace-no-wrap">
         {books.length > 0 ? (
-          books.map(book => (
-            <div key={book._id} className="book-item">
-              <img src={book.book_image} alt={book.title} />
-              <span>{book.title}</span>
-              <button onClick={() => handleViewReviews(book.isbn)}>
+          books.map((book) => (
+            <div key={book._id} className="inline-block w-48 p-4 m-2 bg-gray-100 rounded-lg shadow-md">
+              <img src={book.book_image} alt={book.title} className="w-full h-48 object-cover rounded-md mb-2" />
+              <span className="block text-lg font-semibold mb-2">{book.title}</span>
+              <button
+                onClick={() => handleViewReviews(book.isbn)}
+                className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
                 Watch Reviews
               </button>
             </div>
           ))
         ) : (
-          <p>No books available</p>
+          <p className="text-gray-500">No books available</p>
         )}
       </div>
     </div>

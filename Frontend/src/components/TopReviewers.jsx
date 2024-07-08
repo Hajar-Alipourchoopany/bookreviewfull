@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './TopReviewers.css';
 
 const TopReviewers = () => {
   const [topReviewers, setTopReviewers] = useState([]);
@@ -26,20 +25,30 @@ const TopReviewers = () => {
   };
 
   return (
-    <div className="top-reviewers">
-      <h2>Top Reviewer</h2>
+    <div className="p-4 bg-white shadow rounded-md">
+      <h2 className="text-2xl font-bold mb-4">Top Reviewer</h2>
       {topReviewers.length > 0 ? (
-        <ul>
+        <ul className="space-y-4">
           {topReviewers.map(reviewer => (
-            <li key={reviewer._id} onClick={() => handleUserClick(reviewer._id)}>
-              <img src={reviewer.profileImageUrl} alt={reviewer.username} />
-              <span>{reviewer.username}</span>
-              <span>{reviewer.reviewCount} Reviews</span>
+            <li
+              key={reviewer._id}
+              onClick={() => handleUserClick(reviewer._id)}
+              className="flex items-center cursor-pointer hover:bg-gray-100 p-2 rounded"
+            >
+              <img
+                src={reviewer.profileImageUrl}
+                alt={reviewer.username}
+                className="w-12 h-12 rounded-full mr-4"
+              />
+              <div>
+                <span className="block font-semibold">{reviewer.username}</span>
+                <span className="block text-gray-600">{reviewer.reviewCount} Reviews</span>
+              </div>
             </li>
           ))}
         </ul>
       ) : (
-        <p>Keine Reviewer gefunden.</p>
+        <p className="text-gray-600">Keine Reviewer gefunden.</p>
       )}
     </div>
   );

@@ -10,7 +10,7 @@ import FavoritesPage from './pages/FavoritesPage.jsx';
 import MyReviewsPage from './pages/MyReviewsPage.jsx';
 import AboutUsPage from './pages/AboutUsPage.jsx';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import './App.css';
+import './index.css';
 
 const PrivateRoute = ({ element }) => {
   const { isLoggedIn } = useAuth();

@@ -1,12 +1,19 @@
 import React from 'react';
-import "../ReviewItem.css";
+
 const ReviewItem = ({ review, onFavorite }) => {
   return (
-    <div className="review-item">
-      <p>{review.review_text}</p>
-      <span>{review.username}</span>
-      <span>{review.rating} Stars</span>
-      <button onClick={() => onFavorite(review._id)}>❤️</button>
+    <div className="bg-white shadow-md rounded-lg p-4 mb-4">
+      <p className="text-gray-800 mb-2">{review.review_text}</p>
+      <div className="flex justify-between items-center">
+        <span className="text-sm text-gray-600">{review.username}</span>
+        <span className="text-sm text-gray-600">{review.rating} Stars</span>
+      </div>
+      <button
+        className="mt-2 text-red-500 hover:text-red-700 focus:outline-none"
+        onClick={() => onFavorite(review._id)}
+      >
+        ❤️
+      </button>
     </div>
   );
 };

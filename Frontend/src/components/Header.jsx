@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
-import './Header.css';
 
 const Header = () => {
   const { isLoggedIn } = useAuth();
@@ -16,13 +15,17 @@ const Header = () => {
   };
 
   return (
-    <header className="header">
-      <div className="logo" onClick={handleLogoClick}>
+    <header className="bg-gray-800 text-white p-4 flex justify-between items-center">
+      <div className="text-2xl font-bold cursor-pointer" onClick={handleLogoClick}>
         PBR
       </div>
       <nav>
-        <ul>
-          <li><Link to="/about-us">About Us</Link></li>
+        <ul className="flex space-x-4">
+          <li>
+            <Link to="/about-us" className="hover:text-gray-400">
+              About Us
+            </Link>
+          </li>
         </ul>
       </nav>
     </header>

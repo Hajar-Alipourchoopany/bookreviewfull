@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
-import './BookReviewsPage.css';
 import Header from '../components/Header.jsx';
 
 const BookReviewsPage = () => {
@@ -48,48 +47,57 @@ const BookReviewsPage = () => {
   };
 
   return (
-    <div className="book-reviews-page">
+    <div className="min-h-screen bg-gray-100">
       <Header />
       {book && (
-        <div className="book-info">
-          <h2>{book.title}</h2>
-          <p>{book.author}</p>
-          <img src={book.book_image} alt={book.title} />
+        <div className="max-w-4xl mx-auto p-4">
+          <h2 className="text-3xl font-bold mb-2">{book.title}</h2>
+          <p className="text-lg mb-4">{book.author}</p>
+          <img src={book.book_image} alt={book.title} className="w-48 h-64 object-cover mb-4" />
         </div>
       )}
-      <h2>Bewertungen</h2>
-      <div className="reviews">
-        {reviews.map(review => (
-          <div key={review._id} className="review-item">
-            <p>{review.review_text}</p>
-            <span>{review.username}</span>
-            <span>{review.rating} Stars</span>
+      <div className="max-w-4xl mx-auto p-4">
+        <h2 className="text-2xl font-bold mb-4">Bewertungen</h2>
+        <div className="space-y-4">
+          {reviews.map(review => (
+            <div key={review._id} className="bg-white p-4 rounded shadow">
+              <p className="text-gray-800">{review.review_text}</p>
+              <span className="text-gray-600">{review.username}</span>
+              <span className="text-yellow-500 ml-2">{review.rating} Stars</span>
+            </div>
+          ))}
+        </div>
+        {userData && (
+          <div className="mt-6">
+            <h3 className="text-xl font-semibold mb-2">Neue Bewertung hinzufügen</h3>
+            <form onSubmit={handleAddReview} className="space-y-4">
+              <textarea
+                value={newReviewText}
+                onChange={(e) => setNewReviewText(e.target.value)}
+                required
+                className="w-full p-2 border border-gray-300 rounded"
+              ></textarea>
+              <select
+                value={newReviewRating}
+                onChange={(e) => setNewReviewRating(Number(e.target.value))}
+                className="p-2 border border-gray-300 rounded"
+              >
+                {[1, 2, 3, 4, 5].map(rating => (
+                  <option key={rating} value={rating}>
+                    {rating} Stars
+                  </option>
+                ))}
+              </select>
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Bewertung hinzufügen
+              </button>
+            </form>
           </div>
-        ))}
+        )}
       </div>
-      {userData && (
-        <div className="add-review">
-          <h3>Neue Bewertung hinzufügen</h3>
-          <form onSubmit={handleAddReview}>
-            <textarea
-              value={newReviewText}
-              onChange={(e) => setNewReviewText(e.target.value)}
-              required
-            ></textarea>
-            <select
-              value={newReviewRating}
-              onChange={(e) => setNewReviewRating(Number(e.target.value))}
-            >
-              {[1, 2, 3, 4, 5].map(rating => (
-                <option key={rating} value={rating}>
-                  {rating} Stars
-                </option>
-              ))}
-            </select>
-            <button type="submit">Bewertung hinzufügen</button>
-          </form>
-        </div>
-      )}
     </div>
   );
 };

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './BookAdd.css';
 
 const BookAdd = ({ isbn }) => {
   const [title, setTitle] = useState('');
@@ -30,26 +29,53 @@ const BookAdd = ({ isbn }) => {
   };
 
   return (
-    <div className="book-add">
-      <h2>Neues Buch hinzufügen</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="p-6 bg-white rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold mb-4">Neues Buch hinzufügen</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label>ISBN:</label>
-          <input type="text" value={isbn} readOnly />
+          <label className="block text-sm font-medium text-gray-700">ISBN:</label>
+          <input
+            type="text"
+            value={isbn}
+            readOnly
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+          />
         </div>
         <div>
-          <label>Titel:</label>
-          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
+          <label className="block text-sm font-medium text-gray-700">Titel:</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+          />
         </div>
         <div>
-          <label>Autor:</label>
-          <input type="text" value={author} onChange={(e) => setAuthor(e.target.value)} required />
+          <label className="block text-sm font-medium text-gray-700">Autor:</label>
+          <input
+            type="text"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+          />
         </div>
         <div>
-          <label>Buchbild:</label>
-          <input type="file" onChange={(e) => setBookImage(e.target.files[0])} required />
+          <label className="block text-sm font-medium text-gray-700">Buchbild:</label>
+          <input
+            type="file"
+            onChange={(e) => setBookImage(e.target.files[0])}
+            required
+            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100"
+          />
         </div>
-        <button type="submit">Buch hinzufügen</button>
+        <button
+          type="submit"
+          className="mt-3 w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Buch hinzufügen
+        </button>
       </form>
     </div>
   );
