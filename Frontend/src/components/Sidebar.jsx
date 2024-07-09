@@ -1,13 +1,21 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import Logout from './Logout.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faHeart,
+  faUser,
+  faPen,
+  faRightFromBracket,
+  faEdit,
+} from '@fortawesome/free-solid-svg-icons';
+import Logout from './Logout.jsx';
 
 const Sidebar = () => {
   const [profileImage, setProfileImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  const { userData } = useAuth();
+  const { userData, updateUserData } = useAuth();
 
   useEffect(() => {
     const fetchProfileImage = async () => {
@@ -19,19 +27,17 @@ const Sidebar = () => {
     fetchProfileImage();
   }, [userData]);
 
-  const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
-  };
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
 
-  const handleProfileImageUpload = async (e) => {
-    e.preventDefault();
-    if (!selectedFile) {
+    if (!file) {
       console.error('Keine Datei ausgewählt');
       return;
     }
 
     const formData = new FormData();
-    formData.append('profileImageUrl', selectedFile);
+    formData.append('profileImageUrl', file);
 
     try {
       const response = await axios.post(
@@ -45,48 +51,93 @@ const Sidebar = () => {
           withCredentials: true,
         }
       );
+
+      const updatedUser = {
+        ...userData.user,
+        profileImageUrl: response.data.profileImageUrl,
+      };
+      updateUserData({ ...userData, user: updatedUser });
       setProfileImage(response.data.profileImageUrl);
+      setSelectedFile(null); // Clear the selected file
     } catch (error) {
       console.error('Fehler beim Hochladen des Profilbilds:', error);
     }
   };
 
+  const handleEditClick = () => {
+    document.getElementById('file').click();
+  };
+
   return (
-    <div className='flex flex-col items-center p-4 bg-gray-200 h-full'>
-      <div className='mb-4 text-center'>
-        {profileImage ? (
-          <img
-            src={profileImage}
-            alt='Profilbild'
-            className='w-32 h-32 rounded-full mb-2'
+    <div className='w-full lg:w-1/5 bg-gray-100 p-4 h-full rounded-lg font-montserrat'>
+      <div className='mb-4 flex items-center'>
+        <div className='relative'>
+          {profileImage ? (
+            <img
+              src={profileImage}
+              alt='Profilbild'
+              className='w-16 h-16 rounded-full mb-2'
+            />
+          ) : (
+            <div className='w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center mb-2'>
+              <img
+                src='https://t3.ftcdn.net/jpg/05/53/79/60/360_F_553796090_XHrE6R9jwmBJUMo9HKl41hyHJ5gqt9oz.jpg'
+                alt='default user icon'
+                className='rounded-full'
+              />
+            </div>
+          )}
+          <input
+            type='file'
+            id='file'
+            className='hidden'
+            onChange={handleFileChange}
           />
-        ) : (
-          <div className='w-32 h-32 bg-gray-300 rounded-full flex items-center justify-center mb-2'>
-            Kein Profilbild
-          </div>
-        )}
-        <input type='file' onChange={handleFileChange} className='mb-2' />
-        <button
-          onClick={handleProfileImageUpload}
-          className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none'
-        >
-          Profilbild hochladen
-        </button>
+          <FontAwesomeIcon
+            icon={faEdit}
+            className='absolute bottom-0 right-0 text-gray-700 bg-white rounded-full p-1 cursor-pointer'
+            onClick={handleEditClick}
+          />
+        </div>
+        <div className='ml-4'>
+          {userData && (
+            <>
+              <h2 className='text-lg font-semibold'>
+                Hey, {userData.user.username}
+              </h2>
+            </>
+          )}
+        </div>
       </div>
       <h2 className='text-lg font-semibold mb-4'>Navigation</h2>
       <ul className='nav-links mb-4'>
-        <li className='mb-2'>
-          <Link to='/favorites' className='text-blue-500 hover:underline'>
+        <li className='mb-2 flex items-center'>
+          <FontAwesomeIcon
+            icon={faHeart}
+            className='mr-2'
+            style={{ color: 'red' }}
+          />
+          <Link to='/favorites' className='hover:underline'>
             Favoriten
           </Link>
         </li>
-        <li>
-          <Link to='/my-reviews' className='text-blue-500 hover:underline'>
+        <li className='mb-2 flex items-center'>
+          <FontAwesomeIcon icon={faPen} className='mr-2' />
+          <Link to='/my-reviews' className='hover:underline'>
             Meine Reviews
           </Link>
         </li>
+        <li className='mb-2 flex items-center'>
+          <FontAwesomeIcon icon={faUser} className='mr-2' />
+          <Link to='/account' className='hover:underline'>
+            Konto Info
+          </Link>
+        </li>
+        <li className='flex items-center hover:underline'>
+          <FontAwesomeIcon icon={faRightFromBracket} className='mr-2' />
+          <Logout />
+        </li>
       </ul>
-      <Logout />
     </div>
   );
 };

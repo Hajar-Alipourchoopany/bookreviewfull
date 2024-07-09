@@ -1,5 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from 'react-router-dom';
 import LandingPage from './pages/LandingPage.jsx';
 import MainPage from './pages/MainPage.jsx';
 import Login from './pages/Login.jsx';
@@ -14,7 +19,7 @@ import './index.css';
 
 const PrivateRoute = ({ element }) => {
   const { isLoggedIn } = useAuth();
-  return isLoggedIn ? element : <Navigate to="/login" />;
+  return isLoggedIn ? element : <Navigate to='/login' />;
 };
 
 const App = () => {
@@ -22,15 +27,15 @@ const App = () => {
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/about-us" element={<AboutUsPage />} />
-          <Route path="/main" element={<PrivateRoute element={<MainPage />} />} />
-          <Route path="/book-reviews/:isbn" element={<BookReviewsPage />} />
-          <Route path="/user-reviews/:userId" element={<UserReviewsPage />} />
-          <Route path="/favorites" element={<FavoritesPage />} />
-          <Route path="/my-reviews" element={<MyReviewsPage />} />
+          <Route path='/' element={<LandingPage />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/about-us' element={<AboutUsPage />} />
+          <Route path='/main' element={<MainPage />} />
+          <Route path='/book-reviews/:isbn' element={<BookReviewsPage />} />
+          <Route path='/user-reviews/:userId' element={<UserReviewsPage />} />
+          <Route path='/favorites' element={<FavoritesPage />} />
+          <Route path='/my-reviews' element={<MyReviewsPage />} />
         </Routes>
       </Router>
     </AuthProvider>

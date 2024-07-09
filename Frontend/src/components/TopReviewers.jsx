@@ -9,7 +9,9 @@ const TopReviewers = () => {
   useEffect(() => {
     const fetchTopReviewers = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/topreviewer');
+        const response = await axios.get(
+          'http://localhost:8000/api/topreviewer'
+        );
         setTopReviewers(response.data.reviewers || []);
       } catch (error) {
         console.error('Fehler beim Abrufen der Top-Reviewer:', error);
@@ -25,30 +27,32 @@ const TopReviewers = () => {
   };
 
   return (
-    <div className="p-4 bg-white shadow rounded-md">
-      <h2 className="text-2xl font-bold mb-4">Top Reviewer</h2>
+    <div className='p-4 bg-white shadow rounded-md mb-4'>
+      <h2 className='text-2xl font-bold mb-4'>Top Reviewer</h2>
       {topReviewers.length > 0 ? (
-        <ul className="space-y-4">
-          {topReviewers.map(reviewer => (
+        <ul className='space-y-4'>
+          {topReviewers.map((reviewer) => (
             <li
               key={reviewer._id}
               onClick={() => handleUserClick(reviewer._id)}
-              className="flex items-center cursor-pointer hover:bg-gray-100 p-2 rounded"
+              className='flex items-center cursor-pointer hover:bg-gray-100 p-2 rounded'
             >
               <img
                 src={reviewer.profileImageUrl}
                 alt={reviewer.username}
-                className="w-12 h-12 rounded-full mr-4"
+                className='w-12 h-12 rounded-full mr-4'
               />
               <div>
-                <span className="block font-semibold">{reviewer.username}</span>
-                <span className="block text-gray-600">{reviewer.reviewCount} Reviews</span>
+                <span className='block font-semibold'>{reviewer.username}</span>
+                <span className='block text-gray-600'>
+                  {reviewer.reviewCount} Reviews
+                </span>
               </div>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="text-gray-600">Keine Reviewer gefunden.</p>
+        <p className='text-gray-600'>Keine Reviewer gefunden.</p>
       )}
     </div>
   );

@@ -2,6 +2,7 @@ import models from '../model/schema.js';
 const { User, Review } = models;
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import asyncHandler from '../utils/asyncHandler.js';
 
 // Benutzerregistrierung
 export const registerUser = async (req, res) => {
@@ -50,22 +51,21 @@ export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Überprüfen, ob der Benutzer existiert
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: 'Ungültige Anmeldedaten' });
     }
 
-    // Passwort überprüfen
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) {
       return res.status(400).json({ message: 'Ungültige Anmeldedaten' });
     }
 
-    // JWT Token erstellen
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
+
+    res.cookie('token', token, { maxAge: 3600000 }); // 1 hour
 
     res.status(200).json({ token, user });
   } catch (error) {
@@ -76,6 +76,7 @@ export const loginUser = async (req, res) => {
 // Benutzer ausloggen
 export const logoutUser = async (req, res) => {
   try {
+    res.clearCookie('token');
     res.status(200).json({ message: 'Benutzer erfolgreich ausgeloggt.' });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -130,38 +131,37 @@ export const getTopReviewer = async (req, res) => {
 };
 
 // Bewertung zu Favoriten hinzufügen
-export const addReviewToFavorites = async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const { reviewId } = req.body;
+export const addBookToFavorites = asyncHandler(async (req, res, next) => {
+  const { userId, bookId } = req.body;
 
+  try {
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: 'Benutzer nicht gefunden.' });
     }
 
-    const review = await Review.findById(reviewId);
-    if (!review) {
-      return res.status(404).json({ message: 'Rezension nicht gefunden.' });
+    const book = await Book.findById(bookId);
+    if (!book) {
+      return res.status(404).json({ message: 'Buch nicht gefunden.' });
     }
 
-    if (user.favorites.includes(reviewId)) {
+    if (user.favorites.includes(bookId)) {
       return res
         .status(400)
-        .json({ message: 'Rezension bereits in den Favoriten.' });
+        .json({ message: 'Buch bereits in den Favoriten.' });
     }
 
-    user.favorites.push(reviewId);
+    user.favorites.push(bookId);
     await user.save();
 
     res.status(200).json({
-      message: 'Rezension zu den Favoriten hinzugefügt.',
+      message: 'Buch zu den Favoriten hinzugefügt.',
       favorites: user.favorites,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
 
 export const uploadProfileImage = async (req, res) => {
   try {

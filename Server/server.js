@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './db/db.js';
 import routes from './route/routes.js';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -18,6 +19,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(cookieParser());
 
 // Middleware
 app.use(express.json());

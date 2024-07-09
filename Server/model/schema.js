@@ -2,11 +2,11 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 // User Schema
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: [true, 'Benutzername ist erforderlich'],
-    unique: true
+    unique: true,
   },
   profileImageUrl: {
     type: String,
@@ -14,34 +14,34 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: [true, 'E-Mail ist erforderlich'],
-    unique: true
+    unique: true,
   },
   password: {
     type: String,
-    required: [true, 'Passwort ist erforderlich']
+    required: [true, 'Passwort ist erforderlich'],
   },
   created_at: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   updated_at: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   reviews: [
     {
       review_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'Review'
-      }
-    }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Review',
+      },
+    },
   ],
   favorites: [
     {
-      type: Schema.Types.ObjectId,
-      ref: 'Review'
-    }
-  ]
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Book',
+    },
+  ],
 });
 
 // Book Schema
@@ -49,62 +49,64 @@ const bookSchema = new Schema({
   isbn: {
     type: String,
     required: [true, 'ISBN ist erforderlich'],
-    unique: true
+    unique: true,
   },
   title: {
     type: String,
-    required: [true, 'Titel ist erforderlich']
+    required: [true, 'Titel ist erforderlich'],
   },
   author: {
     type: String,
-    required: [true, 'Autor ist erforderlich']
+    required: [true, 'Autor ist erforderlich'],
   },
   book_image: {
     type: String,
   },
   created_at: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   updated_at: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
-  reviews: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Review'
-  }]
+  reviews: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Review',
+    },
+  ],
 });
 
 // Review Schema
 const reviewSchema = new Schema({
   isbn: {
     type: String,
-    required: [true, 'ISBN ist erforderlich']
+    required: [true, 'ISBN ist erforderlich'],
   },
   review_text: {
     type: String,
-    required: [true, 'Rezensionstext ist erforderlich']
+    required: [true, 'Rezensionstext ist erforderlich'],
   },
   review_date: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   user_id: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: [true, 'Benutzer-ID ist erforderlich']
+    required: [true, 'Benutzer-ID ist erforderlich'],
   },
   username: {
     type: String,
-    required: [true, 'Benutzername ist erforderlich']
+    required: [true, 'Benutzername ist erforderlich'],
   },
   rating: {
     type: Number,
     required: [true, 'Bewertung ist erforderlich'],
     min: 1,
-    max: 5
-  }
+    max: 5,
+  },
 });
 
 // Models

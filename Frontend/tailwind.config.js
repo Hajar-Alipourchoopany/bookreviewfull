@@ -1,14 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        montserrat: ['Montserrat', 'sans-serif'],
+      },
       backgroundImage: {
-      'header-bg': "url('.\src\assets\background.jpg')",
-    },},
+        'header-bg': "url('.srcassets\background.jpg')",
+      },
+    },
   },
   plugins: [],
-}
-
+};

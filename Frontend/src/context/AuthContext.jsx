@@ -11,9 +11,6 @@ export const AuthProvider = ({ children }) => {
     const storedUserData = localStorage.getItem('userData');
     return storedUserData ? JSON.parse(storedUserData) : null;
   });
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    () => !!localStorage.getItem('userData')
-  );
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -21,7 +18,6 @@ export const AuthProvider = ({ children }) => {
       const storedUserData = localStorage.getItem('userData');
       if (storedUserData) {
         setUserData(JSON.parse(storedUserData));
-        setIsLoggedIn(true);
       }
     }
   }, [userData]);
@@ -35,7 +31,7 @@ export const AuthProvider = ({ children }) => {
       );
       setUserData(response.data);
       localStorage.setItem('userData', JSON.stringify(response.data));
-      setIsLoggedIn(true);
+      Cookies.set('token', response.data.token, { expires: 1 });
     } catch (error) {
       console.error('Login error:', error);
       throw new Error('Login failed');
@@ -51,7 +47,7 @@ export const AuthProvider = ({ children }) => {
       );
       setUserData(null);
       localStorage.removeItem('userData');
-      setIsLoggedIn(false);
+      Cookies.remove('token');
     } catch (error) {
       console.error('Logout error:', error);
     }
@@ -66,19 +62,24 @@ export const AuthProvider = ({ children }) => {
       );
       setUserData(response.data);
       localStorage.setItem('userData', JSON.stringify(response.data));
-      setIsLoggedIn(true);
+      Cookies.set('token', response.data.token, { expires: 1 });
     } catch (error) {
       console.error('Registration error:', error);
       throw new Error('Registration failed');
     }
   };
 
+  const updateUserData = (newUserData) => {
+    setUserData(newUserData);
+    localStorage.setItem('userData', JSON.stringify(newUserData));
+  };
+
   const values = {
     userData,
-    isLoggedIn,
     login,
     logout,
     register,
+    updateUserData,
   };
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
