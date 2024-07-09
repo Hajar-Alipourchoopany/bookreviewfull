@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext.jsx';
-import Header from '../components/Header.jsx';
 import Sidebar from '../components/Sidebar.jsx';
 
 const FavoritesPage = () => {
   const { userData } = useAuth();
   const [favorites, setFavorites] = useState([]);
+  const [reviewText, setReviewText] = useState('');
+  const [rating, setRating] = useState(1);
+  const [currentBook, setCurrentBook] = useState(null);
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -33,6 +35,36 @@ const FavoritesPage = () => {
     fetchFavorites();
   }, [userData]);
 
+  const handleReviewSubmit = async (bookId) => {
+    if (!reviewText || !rating) {
+      alert('Bitte Bewertungstext und Bewertung angeben');
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/api/reviews`,
+        {
+          isbn: bookId,
+          review_text: reviewText,
+          user_id: userData.user._id,
+          rating: rating,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+          withCredentials: true,
+        }
+      );
+      alert('Bewertung erfolgreich hinzugefügt');
+      setReviewText('');
+      setRating(1);
+      setCurrentBook(null);
+    } catch (error) {
+      console.error('Fehler beim Hinzufügen der Bewertung:', error);
+    }
+  };
+
   return (
     <div className='min-h-screen flex flex-col md:flex-row bg-gray-100'>
       <Sidebar />
@@ -55,7 +87,7 @@ const FavoritesPage = () => {
                 <p className='text-gray-500 mb-2'>ISBN: {book.isbn}</p>
                 <button
                   className='bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700 mb-2'
-                  onClick={() => console.log(`Write review for ${book._id}`)}
+                  onClick={() => setCurrentBook(book)}
                 >
                   Write Review
                 </button>
@@ -66,6 +98,48 @@ const FavoritesPage = () => {
           <p className='text-gray-500'>Keine Favoriten vorhanden</p>
         )}
       </div>
+
+      {currentBook && (
+        <div className='fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center'>
+          <div className='bg-white p-6 rounded-lg shadow-lg'>
+            <h2 className='text-xl font-bold mb-4'>
+              Write a Review for {currentBook.title}
+            </h2>
+            <textarea
+              className='w-full p-2 border rounded mb-4'
+              rows='4'
+              value={reviewText}
+              onChange={(e) => setReviewText(e.target.value)}
+              placeholder='Your review'
+            />
+            <select
+              className='w-full p-2 border rounded mb-4'
+              value={rating}
+              onChange={(e) => setRating(e.target.value)}
+            >
+              {[1, 2, 3, 4, 5].map((num) => (
+                <option key={num} value={num}>
+                  {num} Stars
+                </option>
+              ))}
+            </select>
+            <div className='flex justify-end'>
+              <button
+                className='bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700 mr-2'
+                onClick={() => handleReviewSubmit(currentBook.isbn)}
+              >
+                Submit Review
+              </button>
+              <button
+                className='bg-gray-300 text-black py-1 px-3 rounded hover:bg-gray-500'
+                onClick={() => setCurrentBook(null)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

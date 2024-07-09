@@ -88,14 +88,28 @@ export const logoutUser = async (req, res) => {
 // Bewertungen eines Benutzers anzeigen
 export const getUserReviews = async (req, res) => {
   try {
-    const userId = req.params.userId;
-    const user = await User.findById(userId).populate('reviews.review_id');
+    const { userId } = req.params;
+
+    const user = await User.findById(userId).populate({
+      path: 'reviews.review_id',
+      populate: {
+        path: 'book_id',
+        select: 'title',
+      },
+    });
 
     if (!user) {
       return res.status(404).json({ message: 'Benutzer nicht gefunden.' });
     }
 
-    res.status(200).json(user.reviews);
+    const reviews = user.reviews.map((review) => ({
+      _id: review.review_id._id,
+      bookTitle: review.review_id.book_id.title,
+      review_text: review.review_id.review_text,
+      rating: review.review_id.rating,
+    }));
+
+    res.status(200).json(reviews);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

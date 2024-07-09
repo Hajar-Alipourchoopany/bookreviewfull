@@ -14,6 +14,9 @@ const MyReviewsPage = () => {
         const response = await axios.get(
           `http://localhost:8000/api/users/${userData.user._id}/reviews`,
           {
+            headers: {
+              Authorization: `Bearer ${userData.token}`,
+            },
             withCredentials: true,
           }
         );

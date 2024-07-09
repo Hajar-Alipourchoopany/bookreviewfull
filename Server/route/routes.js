@@ -15,7 +15,11 @@ import {
   getTopReviewer,
   uploadProfileImage,
 } from '../controller/userController.js';
-import { addReview, deleteReview } from '../controller/reviewController.js';
+import {
+  addReview,
+  deleteReview,
+  getReviewsByISBN,
+} from '../controller/reviewController.js';
 import upload from '../middlewares/upload.js';
 import verifyUser from '../middlewares/auth.js';
 
@@ -31,6 +35,7 @@ router.post('/favorites', verifyUser, addBookToFavorites);
 // Rezenssionenrouten
 router.post('/reviews', addReview);
 router.delete('/reviews/:reviewId', deleteReview);
+router.get('/reviews/:isbn', getReviewsByISBN); // New route
 
 // Benutzerrouten
 router.post('/register', registerUser);

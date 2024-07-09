@@ -69,7 +69,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className='w-full lg:w-1/5 bg-gray-100 p-4 h-full rounded-lg font-montserrat'>
+    <div className='w-60 h-full bg-gray-100 p-4  rounded-lg font-montserrat'>
       <div className='mb-4 flex items-center'>
         <div className='relative'>
           {profileImage ? (

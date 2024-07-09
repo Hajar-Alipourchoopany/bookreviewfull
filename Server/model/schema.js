@@ -79,6 +79,7 @@ const bookSchema = new Schema({
 });
 
 // Review Schema
+// Review Schema
 const reviewSchema = new Schema({
   isbn: {
     type: String,
@@ -106,6 +107,11 @@ const reviewSchema = new Schema({
     required: [true, 'Bewertung ist erforderlich'],
     min: 1,
     max: 5,
+  },
+  book_id: {
+    type: Schema.Types.ObjectId,
+    ref: 'Book',
+    required: [true, 'Buch-ID ist erforderlich'],
   },
 });
 

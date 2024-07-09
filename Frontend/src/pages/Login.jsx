@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useNavigate, Link } from 'react-router-dom';
-import Header from '../components/Header.jsx';
 
 const Login = () => {
   const { login } = useAuth();
@@ -21,7 +20,6 @@ const Login = () => {
 
   return (
     <div className='min-h-screen flex flex-col items-center justify-center bg-gray-100'>
-      <Header />
       <div className='bg-white p-8 rounded shadow-md w-full max-w-md mt-8'>
         <h2 className='text-2xl font-bold mb-6'>Login</h2>
         <form onSubmit={handleLogin} className='space-y-6'>
