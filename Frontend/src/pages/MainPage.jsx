@@ -156,7 +156,7 @@ const MainPage = () => {
           <FontAwesomeIcon
             icon={faSearch}
             size='3x'
-            className='text-blue-500 mb-4'
+            className='text-blue-500 mb-4 '
           />
           <h3 className='text-lg font-semibold text-center'>
             Search for Books
