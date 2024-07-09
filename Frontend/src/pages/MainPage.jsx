@@ -15,8 +15,14 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   const handleSearch = async () => {
+    if (!isbn) {
+      console.error('ISBN ist erforderlich');
+      return;
+    }
     try {
-      const bookResponse = await axios.get(`http://localhost:8000/api/books/${isbn}`);
+      const bookResponse = await axios.get(`http://localhost:8000/api/books/${isbn}`, {
+        withCredentials: true,
+      });
       setBook(bookResponse.data.book);
       setReviews(bookResponse.data.reviews);
       setBookNotFound(false);
