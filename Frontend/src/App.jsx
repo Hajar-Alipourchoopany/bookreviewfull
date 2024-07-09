@@ -27,10 +27,10 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/about-us" element={<AboutUsPage />} />
           <Route path="/main" element={<PrivateRoute element={<MainPage />} />} />
-          <Route path="/book-reviews/:isbn" element={<PrivateRoute element={<BookReviewsPage />} />} />
-          <Route path="/user-reviews/:userId" element={<PrivateRoute element={<UserReviewsPage />} />} />
-          <Route path="/favorites" element={<PrivateRoute element={<FavoritesPage />} />} />
-          <Route path="/my-reviews" element={<PrivateRoute element={<MyReviewsPage />} />} />
+          <Route path="/book-reviews/:isbn" element={<BookReviewsPage />} />
+          <Route path="/user-reviews/:userId" element={<UserReviewsPage />} />
+          <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/my-reviews" element={<MyReviewsPage />} />
         </Routes>
       </Router>
     </AuthProvider>
