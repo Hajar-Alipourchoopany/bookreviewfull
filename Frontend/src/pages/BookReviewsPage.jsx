@@ -15,7 +15,9 @@ const BookReviewsPage = () => {
   useEffect(() => {
     const fetchBookAndReviews = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/books/${isbn}`);
+        const response = await axios.get(`http://localhost:8000/api/books/${isbn}`, {
+          withCredentials: true,
+        });
         setBook(response.data.book);
         setReviews(response.data.reviews);
       } catch (error) {
@@ -32,17 +34,24 @@ const BookReviewsPage = () => {
       isbn,
       review_text: newReviewText,
       rating: newReviewRating,
-      user_id: userData._id,
-      username: userData.username
     };
 
     try {
-      const response = await axios.post('/api/reviews', newReview);
+      const response = await axios.post('http://localhost:8000/api/reviews', newReview, {
+        withCredentials: true,
+      });
       setReviews([...reviews, response.data]);
       setNewReviewText('');
       setNewReviewRating(1);
     } catch (error) {
       console.error('Fehler beim Hinzufügen der Bewertung:', error);
+      if (error.response) {
+        console.error('Serverantwort:', error.response.status, error.response.data);
+      } else if (error.request) {
+        console.error('Keine Antwort vom Server erhalten:', error.request);
+      } else {
+        console.error('Fehler bei der Erstellung der Anfrage:', error.message);
+      }
     }
   };
 
@@ -59,7 +68,7 @@ const BookReviewsPage = () => {
       <div className="max-w-4xl mx-auto p-4">
         <h2 className="text-2xl font-bold mb-4">Bewertungen</h2>
         <div className="space-y-4">
-          {reviews.map(review => (
+          {reviews.map((review) => (
             <div key={review._id} className="bg-white p-4 rounded shadow">
               <p className="text-gray-800">{review.review_text}</p>
               <span className="text-gray-600">{review.username}</span>
@@ -82,7 +91,7 @@ const BookReviewsPage = () => {
                 onChange={(e) => setNewReviewRating(Number(e.target.value))}
                 className="p-2 border border-gray-300 rounded"
               >
-                {[1, 2, 3, 4, 5].map(rating => (
+                {[1, 2, 3, 4, 5].map((rating) => (
                   <option key={rating} value={rating}>
                     {rating} Stars
                   </option>
