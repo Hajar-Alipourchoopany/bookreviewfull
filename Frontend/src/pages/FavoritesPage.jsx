@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext.jsx';
 import Sidebar from '../components/Sidebar.jsx';
+import ReactStars from 'react-stars';
 
 const FavoritesPage = () => {
   const { userData } = useAuth();
@@ -112,17 +113,14 @@ const FavoritesPage = () => {
               onChange={(e) => setReviewText(e.target.value)}
               placeholder='Your review'
             />
-            <select
-              className='w-full p-2 border rounded mb-4'
+            <ReactStars
+              count={5}
+              size={24}
               value={rating}
-              onChange={(e) => setRating(e.target.value)}
-            >
-              {[1, 2, 3, 4, 5].map((num) => (
-                <option key={num} value={num}>
-                  {num} Stars
-                </option>
-              ))}
-            </select>
+              onChange={(newRating) => setRating(newRating)}
+              half={false}
+              color2={'#ffd700'}
+            />
             <div className='flex justify-end'>
               <button
                 className='bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700 mr-2'

@@ -94,7 +94,7 @@ export const getUserReviews = async (req, res) => {
       path: 'reviews.review_id',
       populate: {
         path: 'book_id',
-        select: 'title',
+        select: 'title book_image',
       },
     });
 
@@ -105,6 +105,7 @@ export const getUserReviews = async (req, res) => {
     const reviews = user.reviews.map((review) => ({
       _id: review.review_id._id,
       bookTitle: review.review_id.book_id.title,
+      bookImage: review.review_id.book_id.book_image,
       review_text: review.review_id.review_text,
       rating: review.review_id.rating,
     }));

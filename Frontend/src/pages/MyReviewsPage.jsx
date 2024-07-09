@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext.jsx';
 import Sidebar from '../components/Sidebar.jsx';
+import ReactStars from 'react-stars';
 
 const MyReviewsPage = () => {
   const [reviews, setReviews] = useState([]);
@@ -20,6 +21,7 @@ const MyReviewsPage = () => {
             withCredentials: true,
           }
         );
+        console.log(response.data); // Log data
         setReviews(response.data || []);
       } catch (error) {
         console.error('Fehler beim Abrufen der Reviews:', error);
@@ -41,11 +43,32 @@ const MyReviewsPage = () => {
               {reviews.map((review) => (
                 <li
                   key={review._id}
-                  className='p-4 bg-white rounded-lg shadow-md'
+                  className='p-4 bg-white rounded-lg shadow-md flex items-start'
                 >
-                  <h3 className='text-2xl font-semibold'>{review.bookTitle}</h3>
-                  <p className='mt-2'>{review.review_text}</p>
-                  <p className='mt-2 font-bold'>Bewertung: {review.rating}</p>
+                  {review.bookImage && (
+                    <img
+                      src={review.bookImage}
+                      alt={review.bookTitle}
+                      className='w-20 h-28 object-cover rounded mr-4'
+                    />
+                  )}
+                  <div>
+                    <h3 className='text-2xl font-semibold'>
+                      {review.bookTitle}
+                    </h3>
+                    <p className='mt-2'>{review.review_text}</p>
+                    <div className='mt-2 flex items-center'>
+                      <span className='font-bold mr-2'>Bewertung:</span>
+                      <ReactStars
+                        count={5}
+                        size={24}
+                        value={review.rating}
+                        edit={false}
+                        half={false}
+                        color2={'#ffd700'}
+                      />
+                    </div>
+                  </div>
                 </li>
               ))}
             </ul>
