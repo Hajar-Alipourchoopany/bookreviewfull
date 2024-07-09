@@ -3,11 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const Header = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, userData } = useAuth();
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
-    if (isLoggedIn) {
+    if (userData) {
       navigate('/main');
     } else {
       navigate('/');

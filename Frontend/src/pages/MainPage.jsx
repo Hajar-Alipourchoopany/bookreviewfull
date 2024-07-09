@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../components/Sidebar.jsx';
 import BookList from '../components/BookList.jsx';
 import TopReviewers from '../components/TopReviewers.jsx';
-import Header from '../components/Header.jsx';
 import { SpinnerDotted } from 'spinners-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faSolidHeart } from '@fortawesome/free-solid-svg-icons';
@@ -16,9 +15,17 @@ const MainPage = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [bookNotFound, setBookNotFound] = useState(false);
-  const { userData } = useAuth();
-  const [favorites, setFavorites] = useState([]);
+  const { userData, updateUserData } = useAuth();
+  const [favorites, setFavorites] = useState(
+    userData ? userData.user.favorites : []
+  );
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userData) {
+      setFavorites(userData.user.favorites);
+    }
+  }, [userData]);
 
   const handleSearch = async () => {
     if (!query) {
@@ -63,7 +70,15 @@ const MainPage = () => {
           withCredentials: true,
         }
       );
-      setFavorites([...favorites, isbn]);
+
+      const updatedFavorites = response.data.favorites;
+      setFavorites(updatedFavorites);
+
+      updateUserData({
+        ...userData,
+        user: { ...userData.user, favorites: updatedFavorites },
+      });
+
       console.log('Buch zu Favoriten hinzugefügt:', response.data);
     } catch (error) {
       console.error('Fehler beim Hinzufügen zu Favoriten:', error);
@@ -72,7 +87,6 @@ const MainPage = () => {
 
   return (
     <div className='min-h-screen flex flex-col'>
-      <Header />
       <div className='flex flex-1'>
         <Sidebar />
         <div className='flex-1 flex flex-col lg:flex-row p-4'>
@@ -123,7 +137,7 @@ const MainPage = () => {
                     >
                       <FontAwesomeIcon
                         icon={
-                          favorites.includes(book.isbn)
+                          favorites.some((fav) => fav.isbn === book.isbn)
                             ? faSolidHeart
                             : faRegularHeart
                         }

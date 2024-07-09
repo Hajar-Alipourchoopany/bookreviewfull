@@ -16,6 +16,7 @@ import MyReviewsPage from './pages/MyReviewsPage.jsx';
 import AboutUsPage from './pages/AboutUsPage.jsx';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './index.css';
+import Header from './components/Header.jsx';
 
 const PrivateRoute = ({ element }) => {
   const { isLoggedIn } = useAuth();
@@ -26,6 +27,7 @@ const App = () => {
   return (
     <AuthProvider>
       <Router>
+        <Header />
         <Routes>
           <Route path='/' element={<LandingPage />} />
           <Route path='/login' element={<Login />} />

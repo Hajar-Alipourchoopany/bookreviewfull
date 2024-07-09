@@ -1,8 +1,10 @@
 import models from '../model/schema.js';
-const { User, Review } = models;
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import asyncHandler from '../utils/asyncHandler.js';
+import ErrorResponse from '../utils/ErrorResponse.js';
+import axios from 'axios';
+const { User, Review, Book } = models;
 
 // Benutzerregistrierung
 export const registerUser = async (req, res) => {
@@ -129,39 +131,6 @@ export const getTopReviewer = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-// Bewertung zu Favoriten hinzufügen
-export const addBookToFavorites = asyncHandler(async (req, res, next) => {
-  const { userId, bookId } = req.body;
-
-  try {
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: 'Benutzer nicht gefunden.' });
-    }
-
-    const book = await Book.findById(bookId);
-    if (!book) {
-      return res.status(404).json({ message: 'Buch nicht gefunden.' });
-    }
-
-    if (user.favorites.includes(bookId)) {
-      return res
-        .status(400)
-        .json({ message: 'Buch bereits in den Favoriten.' });
-    }
-
-    user.favorites.push(bookId);
-    await user.save();
-
-    res.status(200).json({
-      message: 'Buch zu den Favoriten hinzugefügt.',
-      favorites: user.favorites,
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
 export const uploadProfileImage = async (req, res) => {
   try {

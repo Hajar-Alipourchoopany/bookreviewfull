@@ -22,6 +22,11 @@ export const AuthProvider = ({ children }) => {
     }
   }, [userData]);
 
+  const updateUserData = (newUserData) => {
+    setUserData(newUserData);
+    localStorage.setItem('userData', JSON.stringify(newUserData));
+  };
+
   const login = async (email, password) => {
     try {
       const response = await axios.post(
@@ -69,17 +74,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const updateUserData = (newUserData) => {
-    setUserData(newUserData);
-    localStorage.setItem('userData', JSON.stringify(newUserData));
-  };
-
   const values = {
     userData,
+    updateUserData,
     login,
     logout,
     register,
-    updateUserData,
   };
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;

@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 8000;
 
 connectDB();
 
-// Verwende CORS-Middleware
+// Use CORS Middleware
 app.use(
   cors({
     origin: 'http://localhost:5173',
@@ -25,10 +25,10 @@ app.use(cookieParser());
 // Middleware
 app.use(express.json());
 
-// Routen
+// Routes
 app.use('/api', routes);
 
-// Startet den Server
+// Start the server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

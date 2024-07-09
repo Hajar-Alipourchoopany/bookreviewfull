@@ -1,5 +1,5 @@
 import models from '../model/schema.js';
-const { Book, Review } = models;
+const { Book, User } = models;
 import asyncHandler from '../utils/asyncHandler.js';
 import ErrorResponse from '../utils/ErrorResponse.js';
 import axios from 'axios';
@@ -26,7 +26,7 @@ export const getBookByISBN = async (req, res) => {
 export const addNewBook = asyncHandler(async (req, res, next) => {
   const { title, author, isbn } = req.body;
 
-  // vheck if the book already exists
+  // Check if the book already exists
   const existingBook = await Book.findOne({ isbn });
   if (existingBook) {
     return next(
@@ -80,45 +80,22 @@ export const getTopBooks = async (req, res) => {
   }
 };
 
-// export const fetchBookFromAPI = asyncHandler(async (req, res, next) => {
-//   const { isbn } = req.params;
+// Get user favorites
+export const getUserFavorites = asyncHandler(async (req, res, next) => {
+  const { userId } = req.params;
 
-//   try {
-//     const existingBook = await Book.findOne({ isbn });
-//     if (existingBook) {
-//       console.log('Book already exists in the database:', existingBook);
-//       return res.status(200).json(existingBook);
-//     }
+  try {
+    const user = await User.findById(userId).populate('favorites');
+    if (!user) {
+      return next(new ErrorResponse('Benutzer nicht gefunden.', 404));
+    }
 
-//     const response = await axios.get(
-//       `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`
-//     );
-//     console.log('Google Books API response:', response.data);
-
-//     if (!response.data.items || response.data.items.length === 0) {
-//       console.log('Book not found in Google Books API');
-//       return next(new ErrorResponse('Buch nicht gefunden', 404));
-//     }
-
-//     const bookData = response.data.items[0].volumeInfo;
-//     console.log('Book data from Google Books API:', bookData);
-
-//     const newBook = new Book({
-//       isbn,
-//       title: bookData.title,
-//       author: bookData.authors ? bookData.authors.join(', ') : 'Unknown',
-//       book_image: bookData.imageLinks ? bookData.imageLinks.thumbnail : null,
-//     });
-
-//     await newBook.save();
-//     console.log('New book saved to the database:', newBook);
-
-//     res.status(200).json(newBook);
-//   } catch (error) {
-//     console.error('Error fetching book from Google Books API:', error.message);
-//     return next(new ErrorResponse('Fehler beim Abrufen des Buches', 500));
-//   }
-// });
+    res.status(200).json(user.favorites);
+  } catch (error) {
+    console.error('Error fetching user favorites:', error.message);
+    next(new ErrorResponse('Fehler beim Abrufen der Favoriten.', 500));
+  }
+});
 
 export const searchBooks = asyncHandler(async (req, res, next) => {
   const { query } = req.params;
@@ -148,5 +125,69 @@ export const searchBooks = asyncHandler(async (req, res, next) => {
   } catch (error) {
     console.error('Error fetching books from Google Books API:', error.message);
     return next(new ErrorResponse('Fehler beim Abrufen der Bücher', 500));
+  }
+});
+
+export const addBookToFavorites = asyncHandler(async (req, res, next) => {
+  const { userId, bookId } = req.body;
+
+  console.log(`Request received: { userId: '${userId}', bookId: '${bookId}' }`);
+
+  try {
+    let user = await User.findById(userId).populate('favorites');
+    if (!user) {
+      console.log('User not found');
+      return next(new ErrorResponse('Benutzer nicht gefunden.', 404));
+    }
+
+    let book = await Book.findOne({ isbn: bookId });
+    if (!book) {
+      console.log(
+        `Book not found with ISBN: ${bookId}. Fetching from Google Books API...`
+      );
+
+      const response = await axios.get(
+        `https://www.googleapis.com/books/v1/volumes?q=isbn:${bookId}`
+      );
+      if (!response.data.items || response.data.items.length === 0) {
+        return next(new ErrorResponse('Buch nicht gefunden.', 404));
+      }
+
+      const bookData = response.data.items[0].volumeInfo;
+      book = new Book({
+        isbn: bookId,
+        title: bookData.title,
+        author: bookData.authors ? bookData.authors.join(', ') : 'Unknown',
+        book_image: bookData.imageLinks ? bookData.imageLinks.thumbnail : null,
+        created_at: new Date(),
+        updated_at: new Date(),
+      });
+
+      await book.save();
+      console.log('Book saved to database:', book);
+    }
+
+    if (user.favorites.some((favorite) => favorite.isbn === book.isbn)) {
+      console.log('Book already in favorites');
+      return next(new ErrorResponse('Buch bereits in den Favoriten.', 400));
+    }
+
+    user.favorites.push(book._id);
+    await user.save();
+
+    user = await User.findById(userId).populate({
+      path: 'favorites',
+      populate: {
+        path: 'reviews',
+      },
+    });
+
+    res.status(200).json({
+      message: 'Buch zu den Favoriten hinzugefügt.',
+      favorites: user.favorites,
+    });
+  } catch (error) {
+    console.error('Error adding book to favorites:', error.message);
+    next(new ErrorResponse('Fehler beim Hinzufügen zu Favoriten.', 500));
   }
 });
