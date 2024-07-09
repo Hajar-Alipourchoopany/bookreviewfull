@@ -3,10 +3,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import carousel styles
 import { Carousel } from 'react-responsive-carousel';
+import { useAuth } from '../context/AuthContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faSearch,
+  faBookOpen,
+  faPenNib,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons';
+import { Fade } from 'react-awesome-reveal';
 
 const LandingPage = () => {
   const [topBooks, setTopBooks] = useState([]);
   const [reviewers, setReviewers] = useState([]);
+  const { userData } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,10 +45,6 @@ const LandingPage = () => {
     fetchTopBooks();
     fetchReviewers();
   }, []);
-
-  const redirectToRegister = () => {
-    navigate('/register');
-  };
 
   const renderTopBooks = () => (
     <Carousel
@@ -75,7 +81,10 @@ const LandingPage = () => {
       {reviewers.map((reviewer) => (
         <div key={reviewer._id} className='p-4'>
           <img
-            src={reviewer.profileImageUrl}
+            src={
+              reviewer.profileImageUrl ||
+              'https://t3.ftcdn.net/jpg/05/53/79/60/360_F_553796090_XHrE6R9jwmBJUMo9HKl41hyHJ5gqt9oz.jpg'
+            }
             alt={reviewer.username}
             className='w-32 h-32 object-cover mb-4 rounded-full mx-auto'
           />
@@ -88,25 +97,88 @@ const LandingPage = () => {
     </div>
   );
 
+  const renderHowToUse = () => (
+    <div className='flex flex-col space-y-4'>
+      <Fade duration={2000} delay={200} direction='up'>
+        <div className='p-4 bg-white rounded-lg shadow-md flex flex-col items-center'>
+          <FontAwesomeIcon
+            icon={faUser}
+            size='3x'
+            className='text-orange-500 mb-4'
+          />
+          <h3 className='text-lg font-semibold mb-2'>Create an Account</h3>
+          <p className='text-center text-gray-700'>
+            Join our community by creating a free account to start sharing your
+            reviews.
+          </p>
+        </div>
+      </Fade>
+      <Fade duration={2000} delay={200} direction='right'>
+        <div className='p-4 bg-white rounded-lg shadow-md flex flex-col items-center'>
+          <FontAwesomeIcon
+            icon={faSearch}
+            size='3x'
+            className='text-blue-500 mb-4'
+          />
+          <h3 className='text-lg font-semibold mb-2'>Search for Books</h3>
+          <p className='text-center text-gray-700'>
+            Use the search bar above to find books by ISBN, title, or author.
+          </p>
+        </div>
+      </Fade>
+      <Fade duration={3000} delay={200} direction='left'>
+        <div className='p-4 bg-white rounded-lg shadow-md flex flex-col items-center'>
+          <FontAwesomeIcon
+            icon={faBookOpen}
+            size='3x'
+            className='text-green-500 mb-4'
+          />
+          <h3 className='text-lg font-semibold mb-2'>Read Reviews</h3>
+          <p className='text-center text-gray-700'>
+            Read reviews from other users to find out more about the book.
+          </p>
+        </div>
+      </Fade>
+      <Fade duration={5000} delay={200} direction='down'>
+        <div className='p-4 bg-white rounded-lg shadow-md flex flex-col items-center'>
+          <FontAwesomeIcon
+            icon={faPenNib}
+            size='3x'
+            className='text-purple-500 mb-4'
+          />
+          <h3 className='text-lg font-semibold mb-2'>Write Reviews</h3>
+          <p className='text-center text-gray-700'>
+            Share your thoughts and reviews on the books you've read.
+          </p>
+        </div>
+      </Fade>
+    </div>
+  );
+
   return (
     <div className='min-h-screen flex flex-col items-center bg-gray-100'>
       <div className='w-full max-w-4xl p-4'>
         <div className='text-center mb-12'>
           <h1 className='text-4xl font-bold mb-4'>
-            Willkommen zu unserer Buch-Community
+            Welcome to our Book Community!
           </h1>
-          <p className='text-lg mb-4'>
-            Lasst uns gegenseitig inspirieren und unsere Leidenschaft für Bücher
-            teilen. Entdecke neue Bücher, schreibe Bewertungen und finde
-            Gleichgesinnte.
+          <p className='text-3xl mb-4 font-handwritten font-semibold'>
+            Let's inspire each other and share our passion for books. Discover
+            new books, write reviews, and find like-minded people
           </p>
-          <Link
-            to='/register'
-            className='bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700'
-          >
-            Registriere dich jetzt
-          </Link>
+          {!userData ? (
+            <Link
+              to='/register'
+              className='bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700'
+            >
+              Register here
+            </Link>
+          ) : (
+            ''
+          )}
         </div>
+
+        <div className='mb-12'>{renderHowToUse()}</div>
 
         <div className='mb-12'>
           <h2 className='text-2xl font-semibold mb-6'>Top Bücher</h2>

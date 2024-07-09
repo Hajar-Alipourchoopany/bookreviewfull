@@ -5,6 +5,7 @@ export default {
     extend: {
       fontFamily: {
         montserrat: ['Montserrat', 'sans-serif'],
+        handwritten: ['Dancing Script', 'sans-serif'],
       },
       backgroundImage: {
         'header-bg': "url('.srcassets\background.jpg')",

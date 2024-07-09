@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const TopReviewers = () => {
   const [topReviewers, setTopReviewers] = useState([]);
+  const { userData, updateUserData } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,7 +40,10 @@ const TopReviewers = () => {
               className='flex items-center cursor-pointer hover:bg-gray-100 p-2 rounded'
             >
               <img
-                src={reviewer.profileImageUrl}
+                src={
+                  reviewer.profileImageUrl ||
+                  'https://t3.ftcdn.net/jpg/05/53/79/60/360_F_553796090_XHrE6R9jwmBJUMo9HKl41hyHJ5gqt9oz.jpg'
+                }
                 alt={reviewer.username}
                 className='w-12 h-12 rounded-full mr-4'
               />

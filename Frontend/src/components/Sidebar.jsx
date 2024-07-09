@@ -118,19 +118,19 @@ const Sidebar = () => {
             style={{ color: 'red' }}
           />
           <Link to='/favorites' className='hover:underline'>
-            Favoriten
+            Favorites
           </Link>
         </li>
         <li className='mb-2 flex items-center'>
           <FontAwesomeIcon icon={faPen} className='mr-2' />
           <Link to='/my-reviews' className='hover:underline'>
-            Meine Reviews
+            My Reviews
           </Link>
         </li>
         <li className='mb-2 flex items-center'>
           <FontAwesomeIcon icon={faUser} className='mr-2' />
           <Link to='/account' className='hover:underline'>
-            Konto Info
+            My Account
           </Link>
         </li>
         <li className='flex items-center hover:underline'>
