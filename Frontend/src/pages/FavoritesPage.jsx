@@ -10,8 +10,14 @@ const FavoritesPage = () => {
 
   useEffect(() => {
     const fetchFavorites = async () => {
+      if (!userData || !userData._id) {
+        console.error('Benutzerdaten nicht verfügbar');
+        return;
+      }
       try {
-        const response = await axios.get(`http://localhost:8000/api/users/${userData._id}/favorites`);
+        const response = await axios.get(`http://localhost:8000/api/users/${userData._id}/favorites`, {
+          withCredentials: true,
+        });
         setFavorites(response.data);
       } catch (error) {
         console.error('Fehler beim Abrufen der Favoriten:', error);
@@ -19,7 +25,7 @@ const FavoritesPage = () => {
     };
 
     fetchFavorites();
-  }, [userData._id]);
+  }, [userData]);
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gray-100">
