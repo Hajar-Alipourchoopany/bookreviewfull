@@ -25,21 +25,20 @@ router.post('/books', upload.single('book_image'), addNewBook);
 router.get('/top-books', getTopBooks);
 
 // Rezenssionenrouten
-router.post('/reviews', verifyUser, addReview);
-router.delete('/reviews/:reviewId', verifyUser, deleteReview);
+router.post('/reviews', addReview);
+router.delete('/reviews/:reviewId', deleteReview);
 
 // Benutzerrouten
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/logout', logoutUser);
-router.get('/users/:userId/reviews', verifyUser, getUserReviews);
-router.get('/topreviewer', getTopReviewer);
-router.post('/:userId/favorites', verifyUser, addReviewToFavorites);
+router.get('/users/:userId/reviews', getUserReviews); // Nicht geschützt
+router.get('/topreviewer', getTopReviewer); // Nicht geschützt
+router.post('/:userId/favorites', addReviewToFavorites); // Nicht geschützt
 router.post(
   '/:userId/profile-image',
   upload.single('profileImageUrl'),
-  verifyUser,
-  uploadProfileImage
+  uploadProfileImage // Nicht geschützt
 );
 
 export default router;
