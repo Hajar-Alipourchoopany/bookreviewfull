@@ -6,14 +6,14 @@ const AboutUsPage = () => {
     <div className="min-h-screen bg-gray-100">
       <Header />
       <div className="max-w-4xl mx-auto p-4">
-        <h1 className="text-4xl font-bold mb-4">About Us</h1>
+        <h1 className="text-4xl font-bold mb-4">Über uns</h1>
         <p className="mb-4">
-          Welcome to MyBookApp! This application allows users to search for books, read and write reviews, and mark their favorite reviews.
-          Our platform provides an engaging way to discover and share book experiences.
+          Willkommen bei PBR! Diese Anwendung ermöglicht es den Nutzern, nach Büchern zu suchen, Rezensionen zu lesen und zu schreiben und ihre Lieblingsrezensionen zu markieren.
+          Unsere Plattform bietet eine spannende Möglichkeit, Bucherfahrungen zu entdecken und zu teilen.
         </p>
         <p>
-          As graduates of the WBS Coding School, I and my team member Clara developed this full-stack web application as part of our final project.
-          Our project is based on the MERN stack (MongoDB, Express.js, React, and Node.js).
+          Als Absolventen der WBS Coding School haben wir diese Full-Stack-Webanwendung als Teil unseres Abschlussprojekts entwickelt.
+          Unser Projekt basiert auf dem MERN-Stack (MongoDB, Express.js, React und Node.js).
         </p>
       </div>
     </div>
