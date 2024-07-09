@@ -12,7 +12,7 @@ const LandingPage = () => {
     const fetchTopBooks = async () => {
       try {
         const response = await axios.get('http://localhost:8000/api/top-books');
-        setTopBooks(response.data);
+        setTopBooks(response.data.books);
       } catch (error) {
         console.error('Fehler beim Abrufen der Top-Bücher:', error);
         setTopBooks([]); // Fallback auf leeres Array bei Fehler
@@ -22,7 +22,7 @@ const LandingPage = () => {
     const fetchTopUsers = async () => {
       try {
         const response = await axios.get('http://localhost:8000/api/topreviewer');
-        setTopUsers(response.data);
+        setTopUsers(response.data.reviewers);
       } catch (error) {
         console.error('Fehler beim Abrufen der Top-Benutzer:', error);
         setTopUsers([]); // Fallback auf leeres Array bei Fehler
