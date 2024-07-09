@@ -7,22 +7,28 @@ const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [userData, setUserData] = useState(() => {
-    const storedUserData = localStorage.getItem('userData');
-    return storedUserData ? JSON.parse(storedUserData) : null;
-  });
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    () => !!localStorage.getItem('userData')
-  );
+  const [userData, setUserData] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const token = Cookies.get('token');
     if (token && !userData) {
-      const storedUserData = localStorage.getItem('userData');
-      if (storedUserData) {
-        setUserData(JSON.parse(storedUserData));
-        setIsLoggedIn(true);
-      }
+      // Versuchen Sie, Benutzerinformationen mit dem Token zu laden
+      (async () => {
+        try {
+          const response = await axios.get('http://localhost:8000/api/me', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setUserData(response.data);
+          setIsLoggedIn(true);
+        } catch (error) {
+          console.error('Fehler beim Abrufen der Benutzerdaten:', error);
+          // Wenn das Token ungültig ist, löschen Sie es
+          Cookies.remove('token');
+        }
+      })();
     }
   }, [userData]);
 
@@ -34,8 +40,9 @@ export const AuthProvider = ({ children }) => {
         { withCredentials: true }
       );
       setUserData(response.data);
-      localStorage.setItem('userData', JSON.stringify(response.data));
       setIsLoggedIn(true);
+      // Setzen Sie das Token in Cookies
+      Cookies.set('token', response.data.token, { expires: 7 });
     } catch (error) {
       console.error('Login error:', error);
       throw new Error('Login failed');
@@ -50,8 +57,9 @@ export const AuthProvider = ({ children }) => {
         { withCredentials: true }
       );
       setUserData(null);
-      localStorage.removeItem('userData');
       setIsLoggedIn(false);
+      // Entfernen Sie das Token aus den Cookies
+      Cookies.remove('token');
     } catch (error) {
       console.error('Logout error:', error);
     }
@@ -65,8 +73,9 @@ export const AuthProvider = ({ children }) => {
         { withCredentials: true }
       );
       setUserData(response.data);
-      localStorage.setItem('userData', JSON.stringify(response.data));
       setIsLoggedIn(true);
+      // Setzen Sie das Token in Cookies
+      Cookies.set('token', response.data.token, { expires: 7 });
     } catch (error) {
       console.error('Registration error:', error);
       throw new Error('Registration failed');
