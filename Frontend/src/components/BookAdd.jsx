@@ -6,6 +6,7 @@ const BookAdd = ({ isbn }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [bookImage, setBookImage] = useState(null);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -19,18 +20,24 @@ const BookAdd = ({ isbn }) => {
     try {
       await axios.post('http://localhost:8000/api/books', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': 'multipart/form-data',
+        },
       });
       navigate(`/book-reviews/${isbn}`);
     } catch (error) {
       console.error('Fehler beim Hinzufügen des Buches:', error);
+      setError(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : 'Fehler beim Hinzufügen des Buches'
+      );
     }
   };
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-4">Neues Buch hinzufügen</h2>
+      {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">ISBN:</label>
