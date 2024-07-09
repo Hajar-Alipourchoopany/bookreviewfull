@@ -118,7 +118,7 @@ export const getUserReviews = async (req, res) => {
 // Top-Reviewer anzeigen
 export const getTopReviewer = async (req, res) => {
   try {
-    const topReviewer = await User.aggregate([
+    const reviewers = await User.aggregate([
       {
         $project: {
           username: 1,
@@ -127,20 +127,16 @@ export const getTopReviewer = async (req, res) => {
         },
       },
       {
-        $sort: { reviewCount: -1 },
+        $match: {
+          reviewCount: { $gt: 0 },
+        },
       },
       {
-        $limit: 1,
+        $sort: { reviewCount: -1 },
       },
     ]);
 
-    if (topReviewer.length === 0) {
-      return res
-        .status(200)
-        .json({ message: 'Keine Reviewer gefunden.', reviewers: [] });
-    }
-
-    res.status(200).json({ reviewers: topReviewer });
+    res.status(200).json({ reviewers });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

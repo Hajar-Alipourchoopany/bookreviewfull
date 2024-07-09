@@ -6,7 +6,7 @@ import { Carousel } from 'react-responsive-carousel';
 
 const LandingPage = () => {
   const [topBooks, setTopBooks] = useState([]);
-  const [topUsers, setTopUsers] = useState([]);
+  const [reviewers, setReviewers] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,20 +20,20 @@ const LandingPage = () => {
       }
     };
 
-    const fetchTopUsers = async () => {
+    const fetchReviewers = async () => {
       try {
         const response = await axios.get(
           'http://localhost:8000/api/topreviewer'
         );
-        setTopUsers(response.data.reviewers);
+        setReviewers(response.data.reviewers);
       } catch (error) {
-        console.error('Fehler beim Abrufen der Top-Benutzer:', error);
-        setTopUsers([]); // Fallback auf leeres Array bei Fehler
+        console.error('Fehler beim Abrufen der Reviewer:', error);
+        setReviewers([]); // Fallback auf leeres Array bei Fehler
       }
     };
 
     fetchTopBooks();
-    fetchTopUsers();
+    fetchReviewers();
   }, []);
 
   const redirectToRegister = () => {
@@ -70,18 +70,19 @@ const LandingPage = () => {
     </Carousel>
   );
 
-  const renderTopUsers = () => (
-    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-      {topUsers.map((user) => (
-        <div key={user._id} className='p-4 flex flex-col items-center'>
+  const renderReviewers = () => (
+    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+      {reviewers.map((reviewer) => (
+        <div key={reviewer._id} className='p-4'>
           <img
-            src={user.profileImageUrl}
-            alt={user.username}
-            className='w-32 h-32 object-cover mb-4 rounded-full'
+            src={reviewer.profileImageUrl}
+            alt={reviewer.username}
+            className='w-32 h-32 object-cover mb-4 rounded-full mx-auto'
           />
           <h3 className='text-lg font-semibold mb-1 text-center'>
-            {user.username}
+            {reviewer.username}
           </h3>
+          <p className='text-center'>{reviewer.reviewCount} Reviews</p>
         </div>
       ))}
     </div>
@@ -113,8 +114,8 @@ const LandingPage = () => {
         </div>
 
         <div>
-          <h2 className='text-2xl font-semibold mb-6'>Top Users</h2>
-          {renderTopUsers()}
+          <h2 className='text-2xl font-semibold mb-6'>Top Reviewer</h2>
+          {renderReviewers()}
         </div>
       </div>
     </div>
