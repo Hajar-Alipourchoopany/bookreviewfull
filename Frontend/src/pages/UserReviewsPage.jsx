@@ -11,7 +11,9 @@ const UserReviewsPage = () => {
   useEffect(() => {
     const fetchUserReviews = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/users/${userId}/reviews`);
+        const response = await axios.get(`http://localhost:8000/api/users/${userId}/reviews`, {
+          withCredentials: true,
+        });
         setReviews(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error('Fehler beim Abrufen der Reviews:', error);
@@ -33,7 +35,7 @@ const UserReviewsPage = () => {
             {reviews.map(review => (
               <li key={review._id} className="bg-white p-4 rounded-lg shadow">
                 <h3 className="text-xl font-semibold">{review.bookTitle}</h3>
-                <p className="mt-2">{review.reviewText}</p>
+                <p className="mt-2">{review.review_text}</p>
                 <p className="mt-2 text-yellow-500">Bewertung: {review.rating}</p>
               </li>
             ))}
